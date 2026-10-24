@@ -1,0 +1,11 @@
+{
+ "model": "utter-project/EuroLLM-1.7B",
+ "same_tokens": [
+  0.964501242456514,
+  2817
+ ],
+ "bad_more_tokens": [
+  0.9853658536585366,
+  1230
+ ]
+}
