@@ -37,15 +37,15 @@ As a baseline without any language model, I also check what you get by just pick
 
 ## What I noticed
 
-**What the model was trained on matters much more than its size.** Qwen2.5-1.5B, SmolLM2-1.7B and EuroLLM-1.7B are all about the same size. SmolLM2 is trained mostly on English and does only a little better than Qwen2.5-0.5B, a model a third of its size. Qwen2.5 is multilingual but Lithuanian is a small part of its data. EuroLLM was built for the EU languages and mGPT for 61 languages, Lithuanian included, and both get well above 90%.
+The biggest thing is the training data, not the size. Qwen2.5-1.5B, SmolLM2-1.7B and EuroLLM-1.7B are all roughly the same size and land at 80%, 72% and 96.5%. SmolLM2 is mostly English and only does a bit better than Qwen2.5-0.5B, which is a third of its size. EuroLLM was made for the EU languages and mGPT for 61 languages including Lithuanian, and you can see it.
 
-**Bigger still helps inside one family.** Qwen2.5 goes from 69% at 0.5B to 80% at 1.5B.
+Size still helps when everything else is the same: Qwen2.5 goes from 69% to 80% between 0.5B and 1.5B.
 
-**Subject-verb agreement is the easy one, adjective agreement the hard one for weak models.** Verb endings are short and very regular ("sakė jis" vs "sakei jis"), so even word frequency gets 81% there. Adjective agreement needs the model to link two words and match case, number and gender, and frequency alone is at chance (51%).
+Verb agreement turned out to be the easy part. The endings are short and regular ("sakė jis" vs "sakei jis"), so even word frequency gets 81% there. Adjectives are harder because the model has to connect two words and match case, number and gender at once. Word frequency is at 51% on those, basically a coin flip.
 
-**The models aren't just counting tokens.** A wrong form that is split into more tokens tends to get a lower probability for that reason alone, so I checked EuroLLM separately on pairs where both words have the same number of tokens: still 96.5% (2,817 pairs), against 98.5% where the wrong word is longer.
+I was worried the models might just be punishing words that get split into more tokens, since more tokens usually means a lower probability anyway. So for EuroLLM I looked only at pairs where both words have the same number of tokens. Still 96.5% (2,817 pairs), so it's not that.
 
-**Which case swaps are hardest.** For EuroLLM the hardest swaps are the ones where the wrong form is a genitive, nominative or accusative, for example a dative replaced by a genitive (78% of 36 pairs) or a locative replaced by an accusative (84% of 51). Swaps into a dative, locative or instrumental are almost always caught (99-100%). Part of this is probably the pairs and not the model: a genitive can often hang on the next noun and make a perfectly fine sentence. The full breakdown is in `results/case_changes_EuroLLM-1.7B.csv`.
+For EuroLLM the case swaps it misses most are the ones where the wrong word becomes a genitive, nominative or accusative, like a dative turned into a genitive (78% of 36 pairs) or a locative turned into an accusative (84% of 51). Swaps into a dative, locative or instrumental it almost never misses. I suspect some of those misses are my pairs and not the model: a genitive can often attach to the next noun and the sentence is fine again. The full list is in `results/case_changes_EuroLLM-1.7B.csv`.
 
 ## Limitations
 
